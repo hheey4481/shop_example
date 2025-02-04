@@ -77,15 +77,18 @@ class ProductListScreen extends StatelessWidget {
                           },
                           icon: const Icon(
                             Icons.add_shopping_cart,
-                            size: 18,
+                            size: 14,
                             color: Colors.white,
                           ),
                           label: const Text("Add"),
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 8),
+                              horizontal: 10,
+                              vertical: 6,
+                            ),
                             backgroundColor: Colors.black,
                             foregroundColor: Colors.white,
+                            minimumSize: Size.zero,
                             textStyle: const TextStyle(fontSize: 14),
                           ),
                         ),

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shop_example/data/products.dart';
 import 'package:shop_example/models/product.dart';
+import 'package:shop_example/screens/product_detail_screen.dart';
 import 'package:shop_example/screens/product_list_screen.dart';
+import 'package:shop_example/screens/recent_products_screen.dart';
 import 'package:shop_example/widgets/custom_app_bar.dart';
 import 'package:shop_example/widgets/custom_carosel.dart';
+import 'package:shop_example/widgets/recent_products_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,69 +19,97 @@ class HomeScreen extends StatelessWidget {
     final List<Product> displayedProducts =
         recommendedProducts.take(4).toList();
 
+    // 최근 본 상품 4개 (예제 데이터 사용)
+    final List<Product> recentProducts = dummyProducts.take(4).toList();
+
     String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
     return Scaffold(
       appBar: const CustomAppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 40),
-          CustomCarousel(
-            imageUrls: displayedProducts.map((p) => p.imageUrl).toList(),
-            names: displayedProducts.map((p) => p.name).toList(),
-            prices: displayedProducts.map((p) => p.price).toList(),
-          ),
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Recommended',
-                  style: TextStyle(
-                    fontSize: 38,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                const Text(
-                  'For You',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                Text(
-                  formattedDate,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: const Color.fromARGB(179, 94, 94, 94),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProductListScreen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    textStyle:
-                        const TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                  child: Text("All of Products"),
-                )
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 40),
+            CustomCarousel(
+              imageUrls: displayedProducts.map((p) => p.imageUrl).toList(),
+              names: displayedProducts.map((p) => p.name).toList(),
+              prices: displayedProducts.map((p) => p.price).toList(),
             ),
-          )
-        ],
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Recommended',
+                    style: TextStyle(
+                      fontSize: 38,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const Text(
+                    'For You',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  Text(
+                    formattedDate,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: const Color.fromARGB(179, 94, 94, 94),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProductListScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      textStyle:
+                          const TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                    child: Text("All of Products"),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 80),
+            // 최근 본 상품
+            RecentProductsCarousel(
+              imageUrls: recentProducts.map((p) => p.imageUrl).toList(),
+              onMorePressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RecentProductsScreen(),
+                  ),
+                );
+              },
+              onItemTap: (int index) {
+                final product = recentProducts[index];
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailScreen(product: product),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 40),
+          ],
+        ),
       ),
     );
   }
