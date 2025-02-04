@@ -109,9 +109,6 @@ class ProductListScreen extends StatelessWidget {
                             backgroundColor: Colors.black,
                             foregroundColor: Colors.white,
                             textStyle: const TextStyle(fontSize: 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
                           ),
                         ),
                       ],

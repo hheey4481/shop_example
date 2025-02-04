@@ -40,18 +40,6 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         backgroundColor: Colors.black,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.list, color: Colors.white),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const ProductListScreen()),
-              );
-            },
-          )
-        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,6 +78,24 @@ class HomeScreen extends StatelessWidget {
                     color: const Color.fromARGB(179, 94, 94, 94),
                   ),
                 ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProductListScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    textStyle:
+                        const TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                  child: Text("All of Products"),
+                )
               ],
             ),
           )
