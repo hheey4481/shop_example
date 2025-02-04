@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_example/models/product.dart';
+import 'package:shop_example/screens/home_screen.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final Product product;
@@ -10,8 +11,20 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.store,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+            );
+          },
+        ),
         title: Text(product.name),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),

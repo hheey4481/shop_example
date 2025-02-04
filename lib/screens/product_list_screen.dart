@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_example/data/products.dart';
 import 'package:shop_example/models/product.dart';
+import 'package:shop_example/screens/home_screen.dart';
 import 'package:shop_example/screens/product_detail_screen.dart';
 
 class ProductListScreen extends StatelessWidget {
@@ -10,6 +11,18 @@ class ProductListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.store,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+            );
+          },
+        ),
         title: const Text(
           'shop example',
           style: TextStyle(
@@ -18,7 +31,7 @@ class ProductListScreen extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.black,
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
