@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:shop_example/data/products.dart';
 import 'package:shop_example/models/product.dart';
 import 'package:shop_example/screens/product_list_screen.dart';
+import 'package:shop_example/widgets/custom_app_bar.dart';
 import 'package:shop_example/widgets/custom_carosel.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -18,29 +19,7 @@ class HomeScreen extends StatelessWidget {
     String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.store,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-            );
-          },
-        ),
-        title: const Text(
-          'Shop Example',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        backgroundColor: Colors.black,
-      ),
+      appBar: const CustomAppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

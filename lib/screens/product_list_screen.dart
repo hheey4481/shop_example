@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shop_example/data/products.dart';
 import 'package:shop_example/models/product.dart';
-import 'package:shop_example/screens/home_screen.dart';
 import 'package:shop_example/screens/product_detail_screen.dart';
+import 'package:shop_example/widgets/custom_app_bar.dart';
 
 class ProductListScreen extends StatelessWidget {
   const ProductListScreen({super.key});
@@ -10,29 +10,7 @@ class ProductListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.store,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-            );
-          },
-        ),
-        title: const Text(
-          'Shop Example',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        backgroundColor: Colors.black,
-      ),
+      appBar: const CustomAppBar(),
       body: ListView.separated(
         itemCount: dummyProducts.length,
         separatorBuilder: (context, index) => const Divider(
