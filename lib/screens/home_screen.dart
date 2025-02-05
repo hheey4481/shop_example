@@ -14,10 +14,10 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   late Future<List<Product>> _recentProductsFuture;
 
   @override
@@ -98,19 +98,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 80),
-            // 최근 본 상품 (비동기 데이터 로딩)
+            // 최근 본 상품
             FutureBuilder<List<Product>>(
               future: _recentProductsFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator()); // 로딩
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return const SizedBox.shrink();
                 }
 
-                // 최근 본 상품 4개 가져오기
+                // 최근 본 상품 4개
                 final List<Product> recentProducts =
                     snapshot.data!.take(4).toList();
 
