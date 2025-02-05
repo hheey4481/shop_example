@@ -105,9 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator()); // 로딩
                 }
-                if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('최근 본 상품이 없습니다.'));
-                }
 
                 // 최근 본 상품 4개 가져오기
                 final List<Product> recentProducts =

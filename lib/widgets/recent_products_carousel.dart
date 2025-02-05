@@ -20,6 +20,13 @@ class RecentProductsCarousel extends StatelessWidget {
       displayList[i] = imageUrls[i];
     }
 
+    final List<Color?> greyShades = [
+      Colors.grey[500],
+      Colors.grey[400],
+      Colors.grey[300],
+      Colors.grey[400],
+    ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -65,9 +72,7 @@ class RecentProductsCarousel extends StatelessWidget {
                     width: 150,
                     height: 150,
                     decoration: BoxDecoration(
-                      color: imageUrl == null
-                          ? Colors.grey[300]
-                          : null, // 빈 칸이면 회색
+                      color: imageUrl == null ? greyShades[index] : null,
                       image: imageUrl != null
                           ? DecorationImage(
                               image: NetworkImage(imageUrl),
