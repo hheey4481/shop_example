@@ -18,7 +18,10 @@ class RecentProductsCarousel extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50),
+          padding: const EdgeInsets.only(
+            left: 50,
+            right: 5,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -29,16 +32,13 @@ class RecentProductsCarousel extends StatelessWidget {
                   fontWeight: FontWeight.w900,
                 ),
               ),
-              TextButton(
+              IconButton(
                 onPressed: onMorePressed,
-                child: const Text(
-                  'more',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
+                icon: const Icon(
+                  Icons.arrow_forward,
+                  color: Colors.black,
                 ),
-              ),
+              )
             ],
           ),
         ),
