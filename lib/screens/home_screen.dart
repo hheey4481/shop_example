@@ -106,6 +106,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   return const Center(child: CircularProgressIndicator()); // 로딩
                 }
 
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+
                 // 최근 본 상품 4개 가져오기
                 final List<Product> recentProducts =
                     snapshot.data!.take(4).toList();
