@@ -5,12 +5,26 @@ import 'package:shop_example/models/product.dart';
 import 'package:shop_example/screens/product_detail_screen.dart';
 import 'package:shop_example/screens/product_list_screen.dart';
 import 'package:shop_example/screens/recent_products_screen.dart';
+import 'package:shop_example/utils/recent_products.dart';
 import 'package:shop_example/widgets/custom_app_bar.dart';
 import 'package:shop_example/widgets/custom_carosel.dart';
 import 'package:shop_example/widgets/recent_products_carousel.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late Future<List<Product>> _recentProductsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _recentProductsFuture = RecentProducts.getRecentProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +32,6 @@ class HomeScreen extends StatelessWidget {
     final List<Product> recommendedProducts = [...dummyProducts]..shuffle();
     final List<Product> displayedProducts =
         recommendedProducts.take(4).toList();
-
-    // 최근 본 상품 4개 (예제 데이터 사용)
-    final List<Product> recentProducts = dummyProducts.take(4).toList();
 
     String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
@@ -70,7 +81,8 @@ class HomeScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ProductListScreen()),
+                          builder: (context) => ProductListScreen(),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -80,30 +92,47 @@ class HomeScreen extends StatelessWidget {
                       textStyle:
                           const TextStyle(fontSize: 16, color: Colors.white),
                     ),
-                    child: Text("All of Products"),
+                    child: const Text("All of Products"),
                   )
                 ],
               ),
             ),
             const SizedBox(height: 80),
-            // 최근 본 상품
-            RecentProductsCarousel(
-              imageUrls: recentProducts.map((p) => p.imageUrl).toList(),
-              onMorePressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const RecentProductsScreen(),
-                  ),
-                );
-              },
-              onItemTap: (int index) {
-                final product = recentProducts[index];
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductDetailScreen(product: product),
-                  ),
+            // 최근 본 상품 (비동기 데이터 로딩)
+            FutureBuilder<List<Product>>(
+              future: _recentProductsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator()); // 로딩
+                }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('최근 본 상품이 없습니다.'));
+                }
+
+                // 최근 본 상품 4개 가져오기
+                final List<Product> recentProducts =
+                    snapshot.data!.take(4).toList();
+
+                return RecentProductsCarousel(
+                  imageUrls: recentProducts.map((p) => p.imageUrl).toList(),
+                  onMorePressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RecentProductsScreen(),
+                      ),
+                    );
+                  },
+                  onItemTap: (int index) {
+                    final product = recentProducts[index];
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ProductDetailScreen(product: product),
+                      ),
+                    );
+                  },
                 );
               },
             ),

@@ -14,6 +14,12 @@ class RecentProductsCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String?> displayList = List<String?>.filled(4, null);
+
+    for (int i = 0; i < imageUrls.length && i < 4; i++) {
+      displayList[i] = imageUrls[i];
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -49,18 +55,25 @@ class RecentProductsCarousel extends StatelessWidget {
             height: 180,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: imageUrls.length,
+              itemCount: 4,
               itemBuilder: (context, index) {
+                final imageUrl = displayList[index];
+
                 return GestureDetector(
-                  onTap: () => onItemTap(index),
+                  onTap: imageUrl != null ? () => onItemTap(index) : null,
                   child: Container(
                     width: 150,
                     height: 150,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(imageUrls[index]),
-                        fit: BoxFit.cover,
-                      ),
+                      color: imageUrl == null
+                          ? Colors.grey[300]
+                          : null, // 빈 칸이면 회색
+                      image: imageUrl != null
+                          ? DecorationImage(
+                              image: NetworkImage(imageUrl),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
                     ),
                   ),
                 );

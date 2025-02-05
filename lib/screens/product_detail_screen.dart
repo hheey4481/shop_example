@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_example/models/product.dart';
+import 'package:shop_example/utils/recent_products.dart';
 import 'package:shop_example/widgets/custom_app_bar.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -9,6 +10,7 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RecentProducts.addProduct(product);
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Center(
