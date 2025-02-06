@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_example/screens/cart_screen.dart';
 import 'package:shop_example/screens/home_screen.dart';
 import 'package:shop_example/screens/product_list_screen.dart';
+import 'package:shop_example/screens/wish_screen.dart';
 
 class NavigationItem extends StatefulWidget {
   const NavigationItem({super.key});
@@ -17,6 +18,7 @@ class NavigationItemState extends State<NavigationItem> {
   final List<Widget> _pages = [
     const HomeScreen(),
     const CartScreen(),
+    const WishScreen(),
     const ProductListScreen(),
   ];
 
@@ -28,10 +30,11 @@ class NavigationItemState extends State<NavigationItem> {
         backgroundColor: Colors.black,
         activeColor: Colors.white,
         color: Colors.grey,
-        style: TabStyle.fixedCircle,
+        style: TabStyle.react,
         items: const [
           TabItem(icon: Icons.home, title: "Home"),
           TabItem(icon: Icons.shopping_cart, title: "Cart"),
+          TabItem(icon: Icons.favorite, title: "Wish"),
           TabItem(icon: Icons.list, title: "Products"),
         ],
         initialActiveIndex: 1,
