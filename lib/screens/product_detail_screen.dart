@@ -36,31 +36,61 @@ class ProductDetailScreen extends StatelessWidget {
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 40),
-              ElevatedButton.icon(
-                onPressed: () {
-                  final cartProvider =
-                      Provider.of<CartProvider>(context, listen: false);
-                  cartProvider.addToCart(product);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('${product.name} added to cart'),
-                      duration: const Duration(seconds: 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      final cartProvider =
+                          Provider.of<CartProvider>(context, listen: false);
+                      cartProvider.addToCart(product);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${product.name} added to cart'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.add_shopping_cart,
+                      size: 18,
+                      color: Colors.white,
                     ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.add_shopping_cart,
-                  size: 18,
-                  color: Colors.white,
-                ),
-                label: const Text('Add to Cart'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  textStyle: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
+                    label: const Text('Add to Cart'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      textStyle: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${product.name} added to your Wish'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.favorite,
+                      size: 18,
+                      color: Colors.white,
+                    ),
+                    label: const Text('Add to Wish'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      foregroundColor: Colors.white,
+                      textStyle: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),
