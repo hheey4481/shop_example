@@ -13,6 +13,9 @@ class ProductDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RecentProducts.addProduct(product);
+
+    bool isWish = false;
+
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Center(
@@ -67,28 +70,47 @@ class ProductDetailScreen extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('${product.name} added to your Wish'),
-                          duration: const Duration(seconds: 2),
+                  StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
+                    return ElevatedButton.icon(
+                      onPressed: () {
+                        setState(() {
+                          isWish = !isWish;
+                        }); // wish toggle
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(isWish
+                                ? '${product.name} added to your Wish'
+                                : '${product.name} removed to your Wish'),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.favorite,
+                        size: 18,
+                        color: isWish ? Colors.red : Colors.grey,
+                      ),
+                      label: Text(
+                        'Wish',
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(90),
+                          side: const BorderSide(color: Colors.black, width: 2),
                         ),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.favorite,
-                      size: 18,
-                      color: Colors.white,
-                    ),
-                    label: const Text('Add to Wish'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      foregroundColor: Colors.white,
-                      textStyle: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                        textStyle: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    );
+                  })
                 ],
               )
             ],
