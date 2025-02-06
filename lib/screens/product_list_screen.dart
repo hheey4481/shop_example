@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_example/data/products.dart';
 import 'package:shop_example/models/product.dart';
+import 'package:shop_example/providers/cart_provider.dart';
 import 'package:shop_example/screens/product_detail_screen.dart';
 import 'package:shop_example/widgets/custom_app_bar.dart';
 
@@ -68,6 +70,10 @@ class ProductListScreen extends StatelessWidget {
                         const SizedBox(height: 10),
                         ElevatedButton.icon(
                           onPressed: () {
+                            final cartProvider = Provider.of<CartProvider>(
+                                context,
+                                listen: false);
+                            cartProvider.addToCart(product);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('${product.name} added to cart'),
