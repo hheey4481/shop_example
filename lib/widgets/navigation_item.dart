@@ -37,7 +37,7 @@ class NavigationItemState extends State<NavigationItem> {
           TabItem(icon: Icons.favorite, title: "Wish"),
           TabItem(icon: Icons.list, title: "Products"),
         ],
-        initialActiveIndex: 1,
+        initialActiveIndex: 0,
         onTap: (int index) {
           setState(() {
             _selectedIndex = index;
