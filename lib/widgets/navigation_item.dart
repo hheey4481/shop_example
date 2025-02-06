@@ -2,6 +2,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_example/screens/cart_screen.dart';
 import 'package:shop_example/screens/home_screen.dart';
+import 'package:shop_example/screens/my_page_screen.dart';
 import 'package:shop_example/screens/product_list_screen.dart';
 import 'package:shop_example/screens/wish_screen.dart';
 
@@ -18,8 +19,9 @@ class NavigationItemState extends State<NavigationItem> {
   final List<Widget> _pages = [
     const HomeScreen(),
     const CartScreen(),
-    const WishScreen(),
     const ProductListScreen(),
+    const WishScreen(),
+    const MyPageScreen(),
   ];
 
   @override
@@ -34,8 +36,9 @@ class NavigationItemState extends State<NavigationItem> {
         items: const [
           TabItem(icon: Icons.home, title: "Home"),
           TabItem(icon: Icons.shopping_cart, title: "Cart"),
-          TabItem(icon: Icons.favorite, title: "Wish"),
           TabItem(icon: Icons.list, title: "Products"),
+          TabItem(icon: Icons.favorite, title: "Wish"),
+          TabItem(icon: Icons.person, title: "My Page"),
         ],
         initialActiveIndex: 0,
         onTap: (int index) {
