@@ -5,22 +5,131 @@ import 'package:shop_example/models/product.dart';
 import 'package:shop_example/providers/cart_provider.dart';
 import 'package:shop_example/screens/product_detail_screen.dart';
 import 'package:shop_example/widgets/custom_app_bar.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 
-class ProductListScreen extends StatelessWidget {
+class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
 
   @override
+  State<ProductListScreen> createState() => _ProductListScreenState();
+}
+
+class _ProductListScreenState extends State<ProductListScreen> {
+  String _selectedCategory = "All";
+  String _searchQuery = "";
+
+  final List<String> categories = [
+    "All",
+    "Clothing",
+    "Accessories",
+    "Footwear",
+    "Electronics"
+  ];
+
+  @override
   Widget build(BuildContext context) {
+    // 상품 필터링
+    List<Product> filteredProducts = dummyProducts.where((product) {
+      bool matchesCategory =
+          _selectedCategory == "All" || product.category == _selectedCategory;
+      bool matchesSearch = _searchQuery.isEmpty ||
+          product.name.toLowerCase().contains(_searchQuery.toLowerCase());
+
+      return matchesCategory && matchesSearch;
+    }).toList();
+
     return Scaffold(
       appBar: const CustomAppBar(),
-      body: ListView.separated(
-        itemCount: dummyProducts.length,
-        separatorBuilder: (context, index) => const Divider(
-          color: Colors.grey,
-          thickness: 0.4,
-        ),
+      body: ListView.builder(
+        itemCount: filteredProducts.length + 1, // 검색 UI 포함하여 +1
         itemBuilder: (context, index) {
-          final Product product = dummyProducts[index];
+          if (index == 0) {
+            return Padding(
+              padding: const EdgeInsets.only(
+                top: 10,
+                left: 14,
+                right: 14,
+              ),
+              child: Row(
+                children: [
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton2<String>(
+                      value: _selectedCategory,
+                      items: categories.map((String category) {
+                        return DropdownMenuItem<String>(
+                          value: category,
+                          child: Text(
+                            category,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedCategory = newValue!;
+                        });
+                      },
+                      buttonStyleData: ButtonStyleData(
+                        height: 40,
+                        width: 112,
+                        padding: const EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(color: Colors.black, width: 2),
+                        ),
+                      ),
+                      dropdownStyleData: DropdownStyleData(
+                        maxHeight: 300,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.white,
+                        ),
+                      ),
+                      iconStyleData: const IconStyleData(
+                        icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                        iconSize: 24,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  Expanded(
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(color: Colors.black, width: 2),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              style: const TextStyle(fontSize: 18),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                isDense: true,
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  _searchQuery = value;
+                                });
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          const Icon(Icons.search, color: Colors.black),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          // 두 번째부터 필터링된 상품 리스트
+          final Product product =
+              filteredProducts[index - 1]; // 검색 UI 제외하고 index 맞춤
 
           return GestureDetector(
             onTap: () {
@@ -32,8 +141,7 @@ class ProductListScreen extends StatelessWidget {
               );
             },
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 18.0),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

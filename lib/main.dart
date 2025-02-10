@@ -21,6 +21,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'shop',
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Colors.black,
+      ),
       home: const NavigationItem(),
     );
   }
