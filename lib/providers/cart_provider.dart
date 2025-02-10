@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop_example/models/cart_item.dart';
 import 'package:shop_example/models/product.dart';
 
 class CartProvider with ChangeNotifier {
-  List<Product> _cartItems = [];
+  List<CartItem> _cartItems = [];
 
-  List<Product> get cartItems => _cartItems;
+  List<CartItem> get cartItems => _cartItems;
 
   CartProvider() {
     _loadCartItems();
@@ -19,7 +20,7 @@ class CartProvider with ChangeNotifier {
 
     if (cartData != null) {
       List<dynamic> decodedData = jsonDecode(cartData);
-      _cartItems = decodedData.map((item) => Product.fromJson(item)).toList();
+      _cartItems = decodedData.map((item) => CartItem.fromJson(item)).toList();
       notifyListeners();
     }
   }
@@ -34,18 +35,38 @@ class CartProvider with ChangeNotifier {
 
   // 상품 추가
   void addToCart(Product product) {
-    _cartItems.add(product);
+    int index = _cartItems.indexWhere((item) => item.product.id == product.id);
+
+    if (index != -1) {
+      _cartItems[index].quantity += 1;
+    } else {
+      _cartItems.add(CartItem(product: product, quantity: 1));
+    }
+
     _saveCartItems();
     notifyListeners();
   }
 
-  // TODO: 장바구니에 중복으로 담는 경우 id로 삭제하면 모두 삭제됨
-  // 개수를 업데이트하도록 로직을 수정하면 이 문제도 해결될 것 같음
-  // 상품 삭제
+  // 장바구니 상품 삭제
   void removeFromCart(Product product) {
-    _cartItems.removeWhere((item) => item.id == product.id);
+    _cartItems.removeWhere((item) => item.product.id == product.id);
     _saveCartItems();
     notifyListeners();
+  }
+
+  // 장바구니 수량
+  void decreaseQuantity(Product product) {
+    int index = _cartItems.indexWhere((item) => item.product.id == product.id);
+
+    if (index != -1) {
+      if (_cartItems[index].quantity > 1) {
+        _cartItems[index].quantity -= 1;
+      } else {
+        _cartItems.removeAt(index);
+      }
+      _saveCartItems();
+      notifyListeners();
+    }
   }
 
   // 장바구니 비우기
